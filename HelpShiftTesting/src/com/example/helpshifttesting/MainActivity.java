@@ -2,8 +2,6 @@ package com.example.helpshifttesting;
 
 import java.util.HashMap;
 
-import com.helpshift.Helpshift;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,13 +10,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.helpshift.Helpshift;
+
 public class MainActivity extends Activity {
 	
 	private Button convoButton;
 	private Button helpButton;
-	private Button faqButton;
-	private Button secButton;
-	
+	private Button faqSection;
+	private Button questionButton;
 	Helpshift hs;
 
 	@Override
@@ -31,9 +30,8 @@ public class MainActivity extends Activity {
 				"anand.helpshift.com",
 				"anand_platform_20150520140435207-e8bd7ab4a030031");
 
-	
+//*******************************Conversation**************************************************************	
 		convoButton = (Button) findViewById(R.id.button_Convo);
-		
 		final HashMap customMetadata = new HashMap();
 		 customMetadata.put("usertype", "paid");
 		 customMetadata.put("level", "7");
@@ -44,7 +42,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Helpshift.showConversation(MainActivity.this);
+				
 				HashMap config = new HashMap ();
 	             config.put("gotoConversationAfterContactUs", true);
 	             config.put("requireEmail", true);
@@ -54,18 +52,23 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		
+//******************************Help Button********************************************************
+		
 		helpButton = (Button) findViewById(R.id.button_help);
 		
 		 final HashMap customMetadata1 = new HashMap();
-		 customMetadata.put("usertype", "paid");
-		 customMetadata.put("level", "7");
-		 customMetadata.put("score", "12345");
+		 customMetadata1.put("usertype", "paid");
+		 customMetadata1.put("level", "7");
+		 customMetadata1.put("score", "12345");
 
+		
 		helpButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
 				HashMap config = new HashMap ();
 	             config.put("gotoConversationAfterContactUs", true);
 	             config.put("enableContactUs", Helpshift.ENABLE_CONTACT_US.ALWAYS);
@@ -74,16 +77,19 @@ public class MainActivity extends Activity {
 	             Helpshift.showFAQs(MainActivity.this, config);
 
 			}
-		});
-				 
-		faqButton = (Button) findViewById(R.id.button_daq);
-		final HashMap customMetadata2 = new HashMap();
-		 customMetadata.put("usertype", "paid");
-		 customMetadata.put("level", "7");
-		 customMetadata.put("score", "12345");
+		});		
 	
+//***********************************FAQ Section******************************************************				 
+		
+		
+		faqSection = (Button) findViewById(R.id.button_FaqSection);
+	
+		 final HashMap customMetadata2 = new HashMap();
+		 customMetadata2.put("usertype", "paid");
+		 customMetadata2.put("level", "7");
+		 customMetadata2.put("score", "12345");
 		 
-		 faqButton.setOnClickListener(new OnClickListener() {
+		 faqSection.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -94,10 +100,41 @@ public class MainActivity extends Activity {
 	             config.put("requireEmail", true);
 	             config.put(Helpshift.HSCustomMetadataKey, customMetadata2);
 	             Helpshift.showFAQSection(MainActivity.this, "1", config);
+	             //config.put(key, value)
+
+	             
 			}
 		});
 
+		 
+// *****************************************Question(Single FAQ) **********************************************
 
+	questionButton = (Button) findViewById(R.id.button_Question);
+	
+	 HashMap customMetadata3 = new HashMap();
+	 customMetadata3.put("usertype", "paid");
+	 customMetadata3.put("level", "7");
+	 customMetadata3.put("score", "12345");
+	 
+	 questionButton.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+			HashMap config = new HashMap ();
+            config.put("gotoConversationAfterContactUs", false);
+            config.put("enableContactUs", Helpshift.ENABLE_CONTACT_US.NEVER);
+            config.put("requireEmail", true);
+            config.put(Helpshift.HSCustomMetadataKey, customMetadata);
+            Helpshift.showSingleFAQ(MainActivity.this, "1", config);
+
+		}
+	});
+
+	
+	
+	
 	}
 
 	@Override
