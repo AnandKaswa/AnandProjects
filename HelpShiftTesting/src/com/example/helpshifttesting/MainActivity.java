@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 				"anand.helpshift.com",
 				"anand_platform_20150520140435207-e8bd7ab4a030031");
 
-//*******************************Conversation**************************************************************	
+//*******************************Conversation****************************************************************	
 		convoButton = (Button) findViewById(R.id.button_Convo);
 		final HashMap customMetadata = new HashMap();
 		 customMetadata.put("usertype", "paid");
