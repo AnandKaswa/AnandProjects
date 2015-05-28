@@ -11,10 +11,28 @@ public class TelephonyInfo {
 	private static TelephonyInfo telephonyInfo;
 	private String imsiSIM1;
 	private String imsiSIM2;
+	private static String operatorName;
 	private boolean imsiSIM1Ready;
 	private boolean imsiSIM2Ready;
+	private static String networkCountryISO;
 	
 	
+	public String getNetworkCountryISO() {
+		return networkCountryISO;
+	}
+
+	public void setNetworkCountryISO(String networkCountryISO) {
+		this.networkCountryISO = networkCountryISO;
+	}
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
+
 	public String getImsiSIM1() {
 		return imsiSIM1;
 	}
@@ -52,20 +70,21 @@ public class TelephonyInfo {
 	}
 
 	private TelephonyInfo(){
-		
-		
+			
+			
 	}
 
-
+	
 	public static TelephonyInfo getInstance(Context context){
-
+		
         if(telephonyInfo == null) {
-
+        	
             telephonyInfo = new TelephonyInfo();
-
+            
             TelephonyManager telephonyManager = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE));
-
-            telephonyInfo.imsiSIM1 = telephonyManager.getDeviceId();;
+            operatorName =telephonyManager.getNetworkOperatorName().toString();
+            networkCountryISO =telephonyManager.getNetworkCountryIso().toString();
+            telephonyInfo.imsiSIM1 = telephonyManager.getDeviceId();
             telephonyInfo.imsiSIM2 = null;
 
             try {
@@ -90,9 +109,9 @@ public class TelephonyInfo {
                 telephonyInfo.imsiSIM1Ready = getSIMStateBySlot(context, "getSimStateGemini", 0);
                 telephonyInfo.imsiSIM2Ready = getSIMStateBySlot(context, "getSimStateGemini", 1);
             } catch (GeminiMethodNotFoundException e) {
-
+            	
                 e.printStackTrace();
-
+                
                 try {
                     telephonyInfo.imsiSIM1Ready = getSIMStateBySlot(context, "getSimState", 0);
                     telephonyInfo.imsiSIM2Ready = getSIMStateBySlot(context, "getSimState", 1);
@@ -107,26 +126,25 @@ public class TelephonyInfo {
     }
 
     private static String getDeviceIdBySlot(Context context, String predictedMethodName, int slotID) throws GeminiMethodNotFoundException {
-
+    	
         String imsi = null;
-
+        
         TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
+        
         try{
-
+        	
             Class<?> telephonyClass = Class.forName(telephony.getClass().getName());
-
             Class<?>[] parameter = new Class[1];
             parameter[0] = int.class;
             Method getSimID = telephonyClass.getMethod(predictedMethodName, parameter);
-
+            
             Object[] obParameter = new Object[1];
             obParameter[0] = slotID;
             Object ob_phone = getSimID.invoke(telephony, obParameter);
-
+            
             if(ob_phone != null){
                 imsi = ob_phone.toString();
-
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,7 +171,7 @@ public class TelephonyInfo {
             Object[] obParameter = new Object[1];
             obParameter[0] = slotID;
             Object ob_phone = getSimStateGemini.invoke(telephony, obParameter);
-
+            
             if(ob_phone != null){
                 int simState = Integer.parseInt(ob_phone.toString());
                 if(simState == TelephonyManager.SIM_STATE_READY){
@@ -164,7 +182,7 @@ public class TelephonyInfo {
             e.printStackTrace();
             throw new GeminiMethodNotFoundException(predictedMethodName);
         }
-
+        
         return isReady;
     }
 

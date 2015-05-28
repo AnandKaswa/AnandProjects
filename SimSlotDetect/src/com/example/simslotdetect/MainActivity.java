@@ -15,9 +15,11 @@ public class MainActivity extends Activity{
 		
 		TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
 
+		
         String imsiSIM1 = telephonyInfo.getImsiSIM1();
         String imsiSIM2 = telephonyInfo.getImsiSIM2();
-
+       String operatorName =telephonyInfo.getOperatorName();
+       String networkCountryISO = telephonyInfo.getNetworkCountryISO();
         boolean isSIM1Ready = telephonyInfo.isImsiSIM1Ready();
         boolean isSIM2Ready = telephonyInfo.isImsiSIM2Ready();
 
@@ -28,7 +30,9 @@ public class MainActivity extends Activity{
                 " IME2 : " + imsiSIM2 + "\n" +
                 " IS DUAL SIM : " + isDualSIM + "\n" +
                 " IS SIM1 READY : " + isSIM1Ready + "\n" +
-                " IS SIM2 READY : " + isSIM2Ready + "\n");
+                " IS SIM2 READY : " + isSIM2Ready + "\n"+
+                "Operator Name : "+ operatorName +"\n" +
+                "NetworkCountry ISo :"+ networkCountryISO+ "\n");
     }
 
 
